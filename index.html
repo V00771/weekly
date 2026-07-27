@@ -2,111 +2,113 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wochenkarte</title>
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#0a0d0a">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
-:root{color-scheme:dark;--bg:#0a0d0a;--card:#171d19;--line:#232e26;--line-soft:#2e3d32;--ink:#f2ece0;--ink-soft:#8da08d;--ink-faint:#5a6b5a;--steel:#7ac4a0;--steel-soft:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:'Inter',system-ui,sans-serif}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:14px 10px 40px;min-height:100vh}
+:root{color-scheme:dark;--bg:#0a0d0a;--card:#171d19;--line:#232e26;--line-soft:#2e3d32;--ink:#f2ece0;--ink-soft:#8da08d;--ink-faint:#5a6b5a;--steel:#7ac4a0;--steel-soft:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:14px 10px 40px}
 .wrap{max-width:560px;margin:0 auto}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:4px}
 h1{font-size:26px;font-weight:800;margin:0}
 #resetBtn{font-family:var(--mono);font-size:11px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:999px;padding:7px 14px}
-.grid-2{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-.target-row,.setting-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.target-row input{width:78px;font-family:var(--mono);font-size:16px;font-weight:700;text-align:center;border:1.5px solid var(--line-soft);border-radius:10px;padding:7px;background:#0c130e;color:var(--ink)}
-.toggle-wrap{position:relative;width:44px;height:26px;flex-shrink:0}
+.target-row,.setting-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.target-row input{width:80px;font-family:var(--mono);font-weight:700;text-align:center;border:1.5px solid var(--line-soft);border-radius:10px;padding:7px;background:#0c130e;color:var(--ink)}
+.toggle-wrap{position:relative;width:44px;height:26px}
 .toggle-wrap input{opacity:0;position:absolute}
 .toggle{position:absolute;inset:0;background:#222e26;border:1px solid var(--line-soft);border-radius:999px;transition:.25s}
 .toggle::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;background:var(--ink-soft);border-radius:50%;transition:.3s}
 input:checked+.toggle{background:var(--steel-soft);border-color:var(--steel)}
 input:checked+.toggle::after{background:var(--steel);transform:translateX(18px)}
-.summary{background:linear-gradient(180deg,#1b2620,#151d19);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
-.gauge-box{flex:0 0 96px;height:72px;position:relative}
+
+/* TACHOMETER ORIGINAL */
+.summary{background:linear-gradient(180deg,#1b2620,#151d19);border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.gauge-box{flex:0 0 110px;height:80px;position:relative}
+.gauge-box svg{position:absolute;top:0;left:0;width:110px;height:76px}
+.needle{position:absolute;left:50%;bottom:10px;width:2px;height:44px;background:linear-gradient(to top, var(--ink-faint), var(--ink));border-radius:2px;transform-origin:bottom center;transform:translateX(-50%) rotate(-90deg);transition:transform .6s cubic-bezier(.34,1.4,.64,1)}
+.needle::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;background:var(--ink);border-radius:50%;transform:translateX(-50%)}
+.gauge-readout{position:absolute;left:0;right:0;bottom:-2px;text-align:center}
+.gauge-readout .val{font-family:var(--mono);font-size:15px;font-weight:800;display:block}
+.gauge-readout .lbl{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
 .summary-info{flex:1;min-width:0}
-.stamp{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid currentColor;display:inline-flex}
+.summary-info .row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:4px}
+.summary-info .row span:last-child{color:var(--ink);font-weight:700}
+.stamp{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid currentColor;display:inline-flex;margin-top:6px}
 .stamp.ok{background:rgba(122,196,160,.15);color:#7ac4a0;border-color:rgba(122,196,160,.3)}
+.stamp.over{background:rgba(224,122,106,.12);color:#e08f85}
 .progress-track{height:4px;background:rgba(255,255,255,.06);border-radius:999px;margin-top:8px;overflow:hidden}
-.progress-fill{height:100%;background:var(--steel);width:0%;transition:.6s}
+.progress-fill{height:100%;background:var(--steel);border-radius:999px;transition:width .6s ease}
+
 .day-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
-.day-card.computed{border-color:rgba(122,196,160,.35)}
+.day-card.computed{border-color:rgba(122,196,160,.35);background:linear-gradient(180deg,#1d2a23,#171d19)}
 .day-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .day-name{font-weight:800;font-size:14px}
 .day-netto{font-family:var(--mono);font-size:12px;font-weight:800}
-/* FIX - ENDLICH MIT ABSTAND */
-.row-inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
-.field{min-width:0}
+/* FIX ABSTAND */
+.row-inputs{display:grid!important;grid-template-columns:1fr 1fr!important;gap:16px!important;width:100%!important}
 .field label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
-.field input{width:100%;height:50px;font-family:var(--mono);font-size:16px;font-weight:700;border:1px solid var(--line-soft);border-radius:14px;background:#0c130e;color:var(--ink);text-align:center;color-scheme:dark}
+.field input{width:100%!important;height:52px!important;font-family:var(--mono);font-size:16px;font-weight:700;border:1px solid var(--line-soft);border-radius:14px;background:#0c130e;color:var(--ink);text-align:center;color-scheme:dark}
 .mode-select{grid-column:1 / -1}
-.mode-select label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
 .mode-select select{width:100%;height:44px;border:1px solid var(--line-soft);border-radius:12px;background:#0c130e;color:var(--ink);padding:0 12px}
 .meta-line{display:flex;gap:12px;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:10px;color:var(--ink-faint)}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><div><div class="eyebrow">ZEITERFASSUNG • KW <span id="kw">31</span></div><h1>Wochenkarte</h1></div><button id="resetBtn">Reset</button></header>
-<div class="grid-2">
-<div class="target-row"><div><b>Sollstunden</b><br><span>Ziel für diese Woche</span></div><input id="target" type="text" inputmode="decimal" value="38,5"></div>
-<label class="setting-card"><div><b>PAUSENABZUG</b><br><span>30 Min. ab >6h abziehen</span></div><div class="toggle-wrap"><input id="pauseToggle" type="checkbox" checked><div class="toggle"></div></div></label>
-</div>
+<header><div><div style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.12em">ZEITERFASSUNG • KW <span id="kw"></span></div><h1>Wochenkarte</h1></div><button id="resetBtn">Reset</button></header>
+<div class="target-row"><div><b>Sollstunden</b><br><span style="font-size:11px;color:var(--ink-soft)">Ziel für diese Woche</span></div><input id="target" value="38,5"></div>
+<label class="setting-card"><div><b>PAUSENABZUG</b><br><span style="font-size:11px;color:var(--ink-soft)">30 Min. ab >6h abziehen</span></div><div class="toggle-wrap"><input id="pauseToggle" type="checkbox" checked><div class="toggle"></div></div></label>
 <div class="summary" id="summary"></div>
 <div id="days"></div>
 </div>
 <script>
 const DAYS=[{id:'mo',name:'Montag'},{id:'di',name:'Dienstag'},{id:'mi',name:'Mittwoch'},{id:'do',name:'Donnerstag'},{id:'fr',name:'Freitag'}];
-const LS_KEY='wochenkarte_v7';
-let state=JSON.parse(localStorage.getItem(LS_KEY)||'null')||{
- target:38.5, pause:true,
- days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}
-};
-function toMin(t){if(!t)return 0;const [h,m]=t.split(':').map(Number);return h*60+m}
-function fmtMin(min){const h=Math.floor(min/60), m=min%60;return h+'h '+(m<10?'0':'')+m+'min'}
-function calcDay(d){
- let dur=toMin(d.end)-toMin(d.start); if(dur<0) dur+=24*60;
- let pause=0; if(state.pause && dur>360) pause=30;
- return {brutto:dur, pause, netto:Math.max(0,dur-pause)}
-}
-function save(){localStorage.setItem(LS_KEY,JSON.stringify(state))}
+const LS='wochenkarte_v9_tacho';
+let state=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,pause:true,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
+function toMin(t){const [h,m]=t.split(':').map(Number);return h*60+m}
+function fmt(h){const m=h%60|0;return Math.floor(h/60)+'h '+String(m).padStart(2,'0')+'min'}
+function calc(d){let dur=toMin(d.end)-toMin(d.start); if(dur<0)dur+=1440; let p=(state.pause&&dur>360)?30:0; return {b:dur,p,net:dur-p}}
+function save(){localStorage.setItem(LS,JSON.stringify(state))}
 function render(){
- document.getElementById('kw').textContent=new Date().toLocaleDateString('de-DE',{week:'numeric'})||'31';
- const cont=document.getElementById('days'); cont.innerHTML='';
- let total=0;
- DAYS.forEach(day=>{
-   const d=state.days[day.id]; const c=calcDay(d); total+=c.netto;
-   const card=document.createElement('div'); card.className='day-card'+(c.netto>0?' computed':'');
-   card.innerHTML=`
-    <div class="day-top"><div class="day-name">${day.name}</div><div class="day-netto">${c.netto?fmtMin(c.netto):'0h'}</div></div>
-    <div class="row-inputs">
-      <div class="field"><label>${day.id.toUpperCase()} START</label><input type="time" value="${d.start}" data-id="${day.id}" data-k="start"></div>
-      <div class="field"><label>${day.id.toUpperCase()} ENDE</label><input type="time" value="${d.end}" data-id="${day.id}" data-k="end"></div>
-      <div class="mode-select"><label>MODUS</label><select data-id="${day.id}" data-k="mode"><option value="Fix" ${d.mode==='Fix'?'selected':''}>Fix</option><option value="Flex" ${d.mode==='Flex'?'selected':''}>Flex</option></select></div>
-    </div>
-    <div class="meta-line"><span>Dauer ${fmtMin(c.brutto)}</span><span>Pause ${c.pause}min</span></div>`;
-   cont.appendChild(card);
- });
- const targetMin=state.target*60;
- const diff=total-targetMin;
- const pct=Math.min(100, Math.max(0, (total/targetMin)*100));
+ const cont=document.getElementById('days'); cont.innerHTML=''; let total=0;
+ const calcs={}; DAYS.forEach(x=>{const c=calc(state.days[x.id]); calcs[x.id]=c; total+=c.net;});
+ const targetMin=state.target*60; const pct=Math.min(100,Math.max(0,(total/targetMin)*100));
+ const angle=-90 + (pct/100)*180; const diff=total-targetMin;
+ let stampTxt=diff===0?'exakt am Ziel ✓':diff>0?`+${fmt(diff)}`:`${fmt(Math.abs(diff))} offen`;
+ let stampClass=diff>=0?'ok':'under';
+ if(diff>60) stampClass='over';
  document.getElementById('summary').innerHTML=`
-  <div class="gauge-box"><svg viewBox="0 0 110 76"><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="#232e26" stroke-width="10" stroke-linecap="round"/><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="var(--steel)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${pct*1.41} 200"/></svg>
-  <div style="position:absolute;bottom:0;left:0;right:0;text-align:center"><div style="font-family:var(--mono);font-weight:800">${fmtMin(total)}</div><div style="font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)">Netto</div></div></div>
-  <div class="summary-info"><div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-soft)"><span>Ziel</span><span style="color:var(--ink)">${fmtMin(targetMin)}</span></div>
-  <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-soft)"><span>Erfasst</span><span style="color:var(--ink)">${fmtMin(total)}</span></div>
-  <div style="margin-top:6px"><span class="stamp ok">${diff===0?'exakt am Ziel ✓':(diff>0?'+'+fmtMin(diff):fmtMin(Math.abs(diff))+' offen')}</span></div>
-  <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
- cont.querySelectorAll('input,select').forEach(el=>{el.addEventListener('change',e=>{
-   const id=e.target.dataset.id, k=e.target.dataset.k; state.days[id][k]=e.target.value; save(); render();
- })});
+  <div class="gauge-box">
+    <svg viewBox="0 0 110 76"><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="#232e26" stroke-width="10" stroke-linecap="round"/><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="#7ac4a0" stroke-width="10" stroke-linecap="round" stroke-dasharray="${pct*1.413} 200"/></svg>
+    <div class="needle" style="transform:translateX(-50%) rotate(${angle}deg)"></div>
+    <div class="gauge-readout"><span class="val">${Math.floor(total/60)}h ${String(total%60).padStart(2,'0')}min</span><span class="lbl">Netto</span></div>
+  </div>
+  <div class="summary-info">
+    <div class="row"><span>Ziel</span><span>${fmt(targetMin)}</span></div>
+    <div class="row"><span>Erfasst</span><span>${fmt(total)}</span></div>
+    <span class="stamp ${stampClass}">${stampTxt}</span>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+  </div>`;
+ DAYS.forEach(day=>{
+  const d=state.days[day.id]; const c=calcs[day.id];
+  const card=document.createElement('div'); card.className='day-card'+(c.net>0?' computed':'');
+  card.innerHTML=`<div class="day-top"><b class="day-name">${day.name}</b><span class="day-netto">${c.net?fmt(c.net):'0h'}</span></div>
+  <div class="row-inputs">
+    <div class="field"><label>${day.id.toUpperCase()} START</label><input type="time" value="${d.start}" data-id="${day.id}" data-k="start"></div>
+    <div class="field"><label>${day.id.toUpperCase()} ENDE</label><input type="time" value="${d.end}" data-id="${day.id}" data-k="end"></div>
+    <div class="mode-select"><label>MODUS</label><select data-id="${day.id}" data-k="mode"><option ${d.mode==='Fix'?'selected':''}>Fix</option><option>Flex</option></select></div>
+  </div>
+  <div class="meta-line"><span>Dauer ${fmt(c.b)}</span><span>Pause ${c.p}min</span></div>`;
+  cont.appendChild(card);
+ });
+ cont.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',e=>{state.days[e.target.dataset.id][e.target.dataset.k]=e.target.value; save(); render();}));
 }
-document.getElementById('target').addEventListener('change',e=>{let v=e.target.value.replace(',','.'); state.target=parseFloat(v)||38.5; save(); render()});
-document.getElementById('pauseToggle').addEventListener('change',e=>{state.pause=e.target.checked; save(); render()});
-document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Wirklich resetten?')){localStorage.removeItem(LS_KEY);location.reload()}});
+document.getElementById('target').addEventListener('change',e=>{state.target=parseFloat(e.target.value.replace(',','.'))||38.5; save(); render();});
+document.getElementById('pauseToggle').addEventListener('change',e=>{state.pause=e.target.checked; save(); render();});
+document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Reset?')){localStorage.removeItem(LS);location.reload();}});
+document.getElementById('kw').textContent=new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
 render();
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
 </script>
 </body>
 </html>
