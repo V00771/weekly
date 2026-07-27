@@ -1,26 +1,14 @@
-const CACHE="stundenzettel-v4-final-handyfix";
+const CACHE="stundenzettel-v5-fix3";
 const FILES=["./","./index.html","./style.css","./script.js","./manifest.json"];
-
 self.addEventListener("install",e=>{
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)));
 });
-
 self.addEventListener("activate",e=>{
   e.waitUntil(
     caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())
   );
 });
-
 self.addEventListener("fetch",e=>{
-  e.respondWith(
-    caches.match(e.request).then(r=>{
-      return r || fetch(e.request).then(res=>{
-        return caches.open(CACHE).then(c=>{
-          c.put(e.request,res.clone());
-          return res;
-        });
-      });
-    })
-  );
+  e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
 });
