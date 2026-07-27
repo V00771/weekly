@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Wochenkarte</title>
 <style>
-:root{--bg:#0a0d0a;--card:#161c19;--line:#232e26;--line2:#2c3a31;--ink:#f2ece0;--soft:#8da08d;--faint:#5a6b5a;--green:#7ac4a0;--green2:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:Inter,system-ui}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:16px 12px 50px}
+:root{--bg:#0a0d0a;--card:#161c19;--line:#232e26;--line2:#2c3a31;--ink:#f2ece0;--soft:#8da08d;--faint:#5a6b5a;--green:#7ac4a0;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui;padding:16px 12px 50px}
 .wrap{max-width:560px;margin:0 auto}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .kw{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--faint);text-transform:uppercase}
@@ -15,33 +15,30 @@ h1{font-size:32px;margin:4px 0 0;font-weight:800;letter-spacing:-.03em}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .card small{color:var(--soft);font-size:12px}
 .card input{width:84px;background:#0d1410;border:1.5px solid var(--line2);border-radius:12px;padding:8px;color:var(--ink);font-family:var(--mono);font-weight:700;text-align:center}
-.toggle{position:relative;width:46px;height:28px}.toggle input{opacity:0;position:absolute}.tog{position:absolute;inset:0;background:#1e2b25;border:1px solid var(--line2);border-radius:999px;transition:.25s}.tog:after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;background:var(--soft);border-radius:50%;transition:.3s}input:checked+.tog{background:var(--green2);border-color:var(--green)}input:checked+.tog:after{background:var(--green);transform:translateX(18px)}
+.toggle{position:relative;width:46px;height:28px}.toggle input{opacity:0;position:absolute}.tog{position:absolute;inset:0;background:#1e2b25;border:1px solid var(--line2);border-radius:999px;transition:.25s}.tog:after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;background:var(--soft);border-radius:50%;transition:.3s}input:checked+.tog{background:#1a2e26;border-color:var(--green)}input:checked+.tog:after{background:var(--green);transform:translateX(18px)}
 
-/* TACHO WIE ORIGINAL */
-.summary{background:linear-gradient(180deg,#1c2820,#161c19);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:14px}
-.gauge{width:120px;height:74px;position:relative;flex-shrink:0}
-.gauge svg{position:absolute;top:0;left:0;width:120px;height:74px}
-.needle-line{position:absolute;left:50%;bottom:18px;width:2px;height:38px;background:#d9e2d6;border-radius:2px;transform-origin:bottom center;transform:translateX(-50%) rotate(-90deg);transition:.6s}
-.needle-dot{position:absolute;left:50%;bottom:14px;width:8px;height:8px;background:#d9e2d6;border-radius:50%;transform:translateX(-50%)}
-.gauge-text{position:absolute;left:0;right:0;bottom:0;text-align:center}
-.gauge-text .v{font-family:var(--mono);font-size:16px;font-weight:800;line-height:1}
-.gauge-text .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--soft)}
-.s-info{flex:1}
-.s-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--soft);margin-bottom:3px}
-.s-row b{color:var(--ink)}
-.badge{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;background:#3a2a2a;color:#e0a090;border:1px solid #4a3333;display:inline-block;margin-top:6px}
-.badge.ok{background:rgba(122,196,160,.15);color:#7ac4a0;border-color:rgba(122,196,160,.3)}
-.bar{height:4px;background:#1d2a23;border-radius:999px;margin-top:10px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--green);border-radius:999px}
+/* TACHO ORIGINAL OHNE NADEL */
+.summary{background:linear-gradient(180deg,#1c2820,#161c19);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.gauge{width:118px;flex-shrink:0;text-align:center}
+.gauge svg{width:118px;height:60px;display:block}
+.gauge .v{font-family:var(--mono);font-size:17px;font-weight:800;margin-top:4px;line-height:1}
+.gauge .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--soft)}
+.s-info{flex:1}.s-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--soft);margin-bottom:3px}.s-row b{color:var(--ink)}
+.badge{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;background:rgba(122,196,160,.15);color:#7ac4a0;border:1px solid rgba(122,196,160,.3);display:inline-block;margin-top:6px}
+.bar{height:4px;background:#1d2a23;border-radius:999px;margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--green);border-radius:999px}
 
-/* TAG FELDER - HIER IST DER GAP FIX */
+/* TAG - HIER IST DER LÜCKEN-FIX */
 .day{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
-.day.computed{border-color:rgba(122,196,160,.3)}
 .day-top{display:flex;justify-content:space-between;margin-bottom:14px;font-weight:700}
-.inputs{display:flex!important;gap:14px!important;width:100%!important}
-.inputs .f{flex:1!important;min-width:0!important}
-.inputs .f label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
-.inputs .f input{width:100%!important;height:54px!important;background:#0c130e!important;border:1px solid var(--line2)!important;border-radius:14px!important;color:var(--ink)!important;font-family:var(--mono)!important;font-size:18px!important;font-weight:700!important;text-align:center!important;display:block!important}
+.day-top span:last-child{font-family:var(--mono)}
+.f-label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
+
+/* WICHTIG: 20px Lücke die nicht kleben kann */
+.row{display:flex!important;width:100%!important}
+.col{width:calc(50% - 10px)!important}
+.col:first-child{margin-right:20px!important}
+.col input{width:100%!important;height:56px!important;background:#0c130e!important;border:1px solid var(--line2)!important;border-radius:16px!important;color:var(--ink)!important;font-family:var(--mono)!important;font-size:19px!important;font-weight:700!important;text-align:center!important;-webkit-appearance:none!important;appearance:none!important}
+
 .modus{margin-top:14px}.modus label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
 .modus select{width:100%;height:48px;background:#0c130e;border:1px solid var(--line2);border-radius:12px;color:var(--ink);padding:0 14px;font-family:var(--mono)}
 .meta{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;font-family:var(--mono);font-size:10px;color:var(--faint);display:flex;gap:14px}
@@ -57,21 +54,22 @@ h1{font-size:32px;margin:4px 0 0;font-weight:800;letter-spacing:-.03em}
 </div>
 <script>
 const DAYS=[{id:'mo',name:'Montag'},{id:'di',name:'Dienstag'},{id:'mi',name:'Mittwoch'},{id:'do',name:'Donnerstag'},{id:'fr',name:'Freitag'}];
-const LS='wochenkarte_final_fix';
+const LS='wochenkarte_gap_final_v12';
 let S=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,pause:true,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
-const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m}; const fmt=m=>{let h=Math.floor(m/60),mm=m%60;return h+'h '+(mm<10?'0':'')+mm+'min'}; const calc=d=>{let du=toMin(d.end)-toMin(d.start);if(du<0)du+=1440;let p=(S.pause&&du>360)?30:0;return{b:du,p,n:Math.max(0,du-p)}};
+const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m}; const fmt=m=>{let h=Math.floor(m/60),mm=m%60;return h+'h '+(mm<10?'0':'')+mm+'min'};
+const calc=d=>{let du=toMin(d.end)-toMin(d.start);if(du<0)du+=1440;let p=(S.pause&&du>360)?30:0;return{b:du,p,n:Math.max(0,du-p)}};
 const save=()=>localStorage.setItem(LS,JSON.stringify(S));
 function render(){
  let total=0; let mp={}; DAYS.forEach(x=>{let c=calc(S.days[x.id]);mp[x.id]=c;total+=c.n});
- let tgt=S.target*60; let pct=Math.min(100,Math.max(0,(total/tgt)*100)); let ang=-90+(pct/100)*180; let diff=total-tgt;
+ let tgt=S.target*60; let pct=Math.min(100,Math.max(0,(total/tgt)*100)); let diff=total-tgt;
  document.getElementById('sum').innerHTML=`
-  <div class="gauge"><svg viewBox="0 0 120 80"><path d="M12 70 A48 48 0 0 1 108 70" fill="none" stroke="#222e26" stroke-width="10" stroke-linecap="round"/><path d="M12 70 A48 48 0 0 1 108 70" fill="none" stroke="#7ac4a0" stroke-width="10" stroke-linecap="round" stroke-dasharray="${pct*1.51} 200"/></svg><div class="needle-line" style="transform:translateX(-50%) rotate(${ang}deg)"></div><div class="needle-dot"></div><div class="gauge-text"><div class="v">${Math.floor(total/60)}h${String(total%60).padStart(2,'0')}</div><div class="l">NETTO</div></div></div>
-  <div class="s-info"><div class="s-row"><span>Ziel</span><b>${fmt(tgt)}</b></div><div class="s-row"><span>Erfasst</span><b>${fmt(total)}</b></div><div class="badge ${diff<=0?'':'ok'}">${diff>0?'+'+fmt(diff):fmt(Math.abs(diff))+' offen'}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+  <div class="gauge"><svg viewBox="0 0 120 60"><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#222e26" stroke-width="12" stroke-linecap="round"/><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#7ac4a0" stroke-width="12" stroke-linecap="round" stroke-dasharray="${pct*1.57} 200"/></svg><div class="v">${Math.floor(total/60)}h${String(total%60).padStart(2,'0')}</div><div class="l">NETTO</div></div>
+  <div class="s-info"><div class="s-row"><span>Ziel</span><b>${fmt(tgt)}</b></div><div class="s-row"><span>Erfasst</span><b>${fmt(total)}</b></div><div class="badge">${diff>0?'+'+fmt(diff):fmt(Math.abs(diff))+' offen'}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
  let cont=document.getElementById('days'); cont.innerHTML='';
  DAYS.forEach(d=>{
   let dd=S.days[d.id]; let c=mp[d.id];
-  cont.innerHTML+=`<div class="day ${c.n?'computed':''}"><div class="day-top"><span>${d.name}</span><span style="font-family:var(--mono)">${c.n?fmt(c.n):'0h'}</span></div>
-   <div class="inputs"><div class="f"><label>${d.id.toUpperCase()} START</label><input type="time" value="${dd.start}" data-id="${d.id}" data-k="start"></div><div class="f"><label>${d.id.toUpperCase()} ENDE</label><input type="time" value="${dd.end}" data-id="${d.id}" data-k="end"></div></div>
+  cont.innerHTML+=`<div class="day"><div class="day-top"><span>${d.name}</span><span>${c.n?fmt(c.n):'0h'}</span></div>
+   <div class="row"><div class="col"><span class="f-label">${d.id.toUpperCase()} START</span><input type="time" value="${dd.start}" data-id="${d.id}" data-k="start"></div><div class="col"><span class="f-label">${d.id.toUpperCase()} ENDE</span><input type="time" value="${dd.end}" data-id="${d.id}" data-k="end"></div></div>
    <div class="modus"><label>MODUS</label><select data-id="${d.id}" data-k="mode"><option ${dd.mode=='Fix'?'selected':''}>Fix</option><option ${dd.mode=='Flex'?'selected':''}>Flex</option><option ${dd.mode=='Frei'?'selected':''}>Frei</option></select></div>
    <div class="meta"><span>Dauer ${fmt(c.b)}</span><span>Pause ${c.p}min</span></div></div>`;
  });
@@ -81,7 +79,8 @@ document.getElementById('target').addEventListener('change',e=>{S.target=parseFl
 document.getElementById('pause').addEventListener('change',e=>{S.pause=e.target.checked;save();render()});
 document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset?')){localStorage.removeItem(LS);location.reload()}};
 document.getElementById('kw').textContent=new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
-render(); if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
+render();
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
 </script>
 </body>
 </html>
