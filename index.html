@@ -5,98 +5,83 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Wochenkarte</title>
 <style>
-:root{color-scheme:dark;--bg:#0a0d0a;--card:#171d19;--line:#232e26;--line-soft:#2e3d32;--ink:#f2ece0;--ink-soft:#8da08d;--ink-faint:#5a6b5a;--steel:#7ac4a0;--steel-soft:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:14px 12px 40px}
+:root{--bg:#0a0d0a;--card:#161c19;--line:#232e26;--line2:#2c3a31;--ink:#f2ece0;--soft:#8da08d;--faint:#5a6b5a;--green:#7ac4a0;--green2:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:Inter,system-ui}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:16px 12px 50px}
 .wrap{max-width:560px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:4px}
-h1{font-size:28px;font-weight:800;margin:0;letter-spacing:-.03em}
-#resetBtn{font-family:var(--mono);font-size:11px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:999px;padding:7px 14px}
-.target-row,.setting-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.target-row input{width:80px;font-family:var(--mono);font-weight:700;text-align:center;border:1.5px solid var(--line-soft);border-radius:10px;padding:7px;background:#0c130e;color:var(--ink)}
-.toggle-wrap{position:relative;width:44px;height:26px;flex-shrink:0}
-.toggle-wrap input{opacity:0;position:absolute}.toggle{position:absolute;inset:0;background:#222e26;border:1px solid var(--line-soft);border-radius:999px;transition:.25s}.toggle::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;background:var(--ink-soft);border-radius:50%;transition:.3s}input:checked+.toggle{background:var(--steel-soft);border-color:var(--steel)}input:checked+.toggle::after{background:var(--steel);transform:translateX(18px)}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.kw{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--faint);text-transform:uppercase}
+h1{font-size:32px;margin:4px 0 0;font-weight:800;letter-spacing:-.03em}
+#resetBtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--soft);border-radius:999px;padding:8px 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card small{color:var(--soft);font-size:12px}
+.card input{width:84px;background:#0d1410;border:1.5px solid var(--line2);border-radius:12px;padding:8px;color:var(--ink);font-family:var(--mono);font-weight:700;text-align:center}
+.toggle{position:relative;width:46px;height:28px}.toggle input{opacity:0;position:absolute}.tog{position:absolute;inset:0;background:#1e2b25;border:1px solid var(--line2);border-radius:999px;transition:.25s}.tog:after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;background:var(--soft);border-radius:50%;transition:.3s}input:checked+.tog{background:var(--green2);border-color:var(--green)}input:checked+.tog:after{background:var(--green);transform:translateX(18px)}
 
-/* TACHO ORIGINAL WIE VORHIN */
-.summary{background:linear-gradient(180deg,#1b2620,#151d19);border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:16px}
-.gauge-box{flex:0 0 110px;height:80px;position:relative}
-.gauge-box svg{position:absolute;top:0;left:0;width:110px;height:76px}
-.needle{position:absolute;left:50%;bottom:10px;width:2px;height:44px;background:linear-gradient(to top,var(--ink-faint),var(--ink));border-radius:2px;transform-origin:bottom center;transition:transform .7s cubic-bezier(.34,1.4,.64,1)}
-.needle::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;background:var(--ink);border-radius:50%;transform:translateX(-50%)}
-.gauge-center{position:absolute;left:0;right:0;bottom:0;text-align:center}
-.gauge-center .val{font-family:var(--mono);font-size:15px;font-weight:800;line-height:1}
-.gauge-center .lbl{font-size:7px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
-.summary-info{flex:1;min-width:0}
-.sum-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-bottom:4px}
-.sum-row b{color:var(--ink)}
-.stamp{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid currentColor;display:inline-flex;margin-top:6px}
-.stamp.ok{background:rgba(122,196,160,.15);color:#7ac4a0;border-color:rgba(122,196,160,.3)}
-.stamp.over{background:rgba(224,122,106,.15);color:#e08f85;border-color:rgba(224,122,106,.3)}
-.stamp.under{background:rgba(224,184,119,.12);color:#e0b877}
-.progress-track{height:4px;background:rgba(255,255,255,.06);border-radius:999px;margin-top:10px;overflow:hidden}
-.progress-fill{height:100%;background:var(--steel);border-radius:999px;transition:width .6s}
+/* TACHO WIE ORIGINAL */
+.summary{background:linear-gradient(180deg,#1c2820,#161c19);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.gauge{width:120px;height:74px;position:relative;flex-shrink:0}
+.gauge svg{position:absolute;top:0;left:0;width:120px;height:74px}
+.needle-line{position:absolute;left:50%;bottom:18px;width:2px;height:38px;background:#d9e2d6;border-radius:2px;transform-origin:bottom center;transform:translateX(-50%) rotate(-90deg);transition:.6s}
+.needle-dot{position:absolute;left:50%;bottom:14px;width:8px;height:8px;background:#d9e2d6;border-radius:50%;transform:translateX(-50%)}
+.gauge-text{position:absolute;left:0;right:0;bottom:0;text-align:center}
+.gauge-text .v{font-family:var(--mono);font-size:16px;font-weight:800;line-height:1}
+.gauge-text .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--soft)}
+.s-info{flex:1}
+.s-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--soft);margin-bottom:3px}
+.s-row b{color:var(--ink)}
+.badge{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;background:#3a2a2a;color:#e0a090;border:1px solid #4a3333;display:inline-block;margin-top:6px}
+.badge.ok{background:rgba(122,196,160,.15);color:#7ac4a0;border-color:rgba(122,196,160,.3)}
+.bar{height:4px;background:#1d2a23;border-radius:999px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:999px}
 
-/* TAG */
-.day-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px}
-.day-card.computed{border-color:rgba(122,196,160,.35)}
-.day-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.day-name{font-weight:800;font-size:14px}
-.day-netto{font-family:var(--mono);font-size:12px;font-weight:800}
-/* ENDLICH ABSTAND */
-.row-inputs{display:grid!important;grid-template-columns:1fr 1fr!important;gap:14px!important;width:100%!important}
-.field label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
-.field input{width:100%!important;height:50px!important;font-family:var(--mono);font-size:16px;font-weight:700;border:1px solid var(--line-soft)!important;border-radius:14px!important;background:#0c130e!important;color:var(--ink)!important;text-align:center!important;color-scheme:dark}
-.mode-select{grid-column:1 / -1;margin-top:2px}
-.mode-select label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
-.mode-select select{width:100%;height:44px;border:1px solid var(--line-soft);border-radius:12px;background:#0c130e;color:var(--ink);padding:0 12px;font-family:var(--mono)}
-.meta{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:10px;color:var(--ink-faint);display:flex;gap:12px}
+/* TAG FELDER - HIER IST DER GAP FIX */
+.day{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.day.computed{border-color:rgba(122,196,160,.3)}
+.day-top{display:flex;justify-content:space-between;margin-bottom:14px;font-weight:700}
+.inputs{display:flex!important;gap:14px!important;width:100%!important}
+.inputs .f{flex:1!important;min-width:0!important}
+.inputs .f label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
+.inputs .f input{width:100%!important;height:54px!important;background:#0c130e!important;border:1px solid var(--line2)!important;border-radius:14px!important;color:var(--ink)!important;font-family:var(--mono)!important;font-size:18px!important;font-weight:700!important;text-align:center!important;display:block!important}
+.modus{margin-top:14px}.modus label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
+.modus select{width:100%;height:48px;background:#0c130e;border:1px solid var(--line2);border-radius:12px;color:var(--ink);padding:0 14px;font-family:var(--mono)}
+.meta{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;font-family:var(--mono);font-size:10px;color:var(--faint);display:flex;gap:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><div><div class="eyebrow">ZEITERFASSUNG • KW <span id="kw">31</span></div><h1>Wochenkarte</h1></div><button id="resetBtn">Reset</button></header>
-<div class="target-row"><div><b>Sollstunden</b><br><span style="font-size:11px;color:var(--ink-soft)">Ziel für diese Woche</span></div><input id="target" value="38,5"></div>
-<label class="setting-card"><div><b>PAUSENABZUG</b><br><span style="font-size:11px;color:var(--ink-soft)">30 Min. ab >6h abziehen</span></div><div class="toggle-wrap"><input id="pauseToggle" type="checkbox" checked><div class="toggle"></div></div></label>
-<div class="summary" id="summary"></div>
+<header><div><div class="kw">ZEITERFASSUNG • KW <span id="kw"></span></div><h1>Wochenkarte</h1></div><button id="resetBtn">Reset</button></header>
+<div class="card"><div><b>Sollstunden</b><br><small>Ziel für diese Woche</small></div><input id="target" value="38,5"></div>
+<label class="card"><div><b>PAUSENABZUG</b><br><small>30 Min. ab >6h abziehen</small></div><div class="toggle"><input id="pause" type="checkbox" checked><div class="tog"></div></div></label>
+<div class="summary" id="sum"></div>
 <div id="days"></div>
 </div>
 <script>
 const DAYS=[{id:'mo',name:'Montag'},{id:'di',name:'Dienstag'},{id:'mi',name:'Mittwoch'},{id:'do',name:'Donnerstag'},{id:'fr',name:'Freitag'}];
-const LS='wochenkarte_v10_final';
-let state=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,pause:true,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
-function toMin(t){const [h,m]=t.split(':').map(Number);return h*60+m}
-function fmt(min){const h=Math.floor(min/60),m=min%60;return h+'h '+(m<10?'0':'')+m+'min'}
-function calc(d){let dur=toMin(d.end)-toMin(d.start);if(dur<0)dur+=1440;let p=(state.pause&&dur>360)?30:0;return{b:dur,p,net:Math.max(0,dur-p)}}
-function save(){localStorage.setItem(LS,JSON.stringify(state))}
+const LS='wochenkarte_final_fix';
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,pause:true,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
+const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m}; const fmt=m=>{let h=Math.floor(m/60),mm=m%60;return h+'h '+(mm<10?'0':'')+mm+'min'}; const calc=d=>{let du=toMin(d.end)-toMin(d.start);if(du<0)du+=1440;let p=(S.pause&&du>360)?30:0;return{b:du,p,n:Math.max(0,du-p)}};
+const save=()=>localStorage.setItem(LS,JSON.stringify(S));
 function render(){
- let total=0; const map={}; DAYS.forEach(d=>{const c=calc(state.days[d.id]);map[d.id]=c;total+=c.net;});
- const target=state.target*60; const pct=Math.min(100,Math.max(0,(total/target)*100)); const angle=-90+(pct/100)*180; const diff=total-target;
- const txt=diff===0?'exakt am Ziel ✓':diff>0?`+${fmt(diff)}`:`${fmt(Math.abs(diff))} offen`; const cls=diff===0?'ok':diff>0?'over':'under';
- document.getElementById('summary').innerHTML=`
-  <div class="gauge-box">
-   <svg viewBox="0 0 110 76"><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="#232e26" stroke-width="10" stroke-linecap="round"/><path d="M10 70 A50 50 0 0 1 100 70" fill="none" stroke="#7ac4a0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${pct*1.413} 200"/></svg>
-   <div class="needle" style="transform:translateX(-50%) rotate(${angle}deg)"></div>
-   <div class="gauge-center"><span class="val">${fmt(total).replace(' ','').replace('min','')}</span><span class="lbl">Netto</span></div>
-  </div>
-  <div class="summary-info"><div class="sum-row"><span>Ziel</span><b>${fmt(target)}</b></div><div class="sum-row"><span>Erfasst</span><b>${fmt(total)}</b></div><span class="stamp ${cls}">${txt}</span><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
- const cont=document.getElementById('days'); cont.innerHTML='';
- DAYS.forEach(day=>{
-  const d=state.days[day.id]; const c=map[day.id];
-  cont.innerHTML+=`<div class="day-card ${c.net?'computed':''}"><div class="day-top"><b class="day-name">${day.name}</b><span class="day-netto">${c.net?fmt(c.net):'0h'}</span></div>
-   <div class="row-inputs">
-    <div class="field"><label>${day.id.toUpperCase()} START</label><input type="time" value="${d.start}" data-id="${day.id}" data-k="start"></div>
-    <div class="field"><label>${day.id.toUpperCase()} ENDE</label><input type="time" value="${d.end}" data-id="${day.id}" data-k="end"></div>
-    <div class="mode-select"><label>MODUS</label><select data-id="${day.id}" data-k="mode"><option value="Fix" ${d.mode==='Fix'?'selected':''}>Fix</option><option value="Flex" ${d.mode==='Flex'?'selected':''}>Flex</option><option value="Frei" ${d.mode==='Frei'?'selected':''}>Frei</option></select></div>
-   </div><div class="meta"><span>Dauer ${fmt(c.b)}</span><span>Pause ${c.p}min</span></div></div>`;
+ let total=0; let mp={}; DAYS.forEach(x=>{let c=calc(S.days[x.id]);mp[x.id]=c;total+=c.n});
+ let tgt=S.target*60; let pct=Math.min(100,Math.max(0,(total/tgt)*100)); let ang=-90+(pct/100)*180; let diff=total-tgt;
+ document.getElementById('sum').innerHTML=`
+  <div class="gauge"><svg viewBox="0 0 120 80"><path d="M12 70 A48 48 0 0 1 108 70" fill="none" stroke="#222e26" stroke-width="10" stroke-linecap="round"/><path d="M12 70 A48 48 0 0 1 108 70" fill="none" stroke="#7ac4a0" stroke-width="10" stroke-linecap="round" stroke-dasharray="${pct*1.51} 200"/></svg><div class="needle-line" style="transform:translateX(-50%) rotate(${ang}deg)"></div><div class="needle-dot"></div><div class="gauge-text"><div class="v">${Math.floor(total/60)}h${String(total%60).padStart(2,'0')}</div><div class="l">NETTO</div></div></div>
+  <div class="s-info"><div class="s-row"><span>Ziel</span><b>${fmt(tgt)}</b></div><div class="s-row"><span>Erfasst</span><b>${fmt(total)}</b></div><div class="badge ${diff<=0?'':'ok'}">${diff>0?'+'+fmt(diff):fmt(Math.abs(diff))+' offen'}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+ let cont=document.getElementById('days'); cont.innerHTML='';
+ DAYS.forEach(d=>{
+  let dd=S.days[d.id]; let c=mp[d.id];
+  cont.innerHTML+=`<div class="day ${c.n?'computed':''}"><div class="day-top"><span>${d.name}</span><span style="font-family:var(--mono)">${c.n?fmt(c.n):'0h'}</span></div>
+   <div class="inputs"><div class="f"><label>${d.id.toUpperCase()} START</label><input type="time" value="${dd.start}" data-id="${d.id}" data-k="start"></div><div class="f"><label>${d.id.toUpperCase()} ENDE</label><input type="time" value="${dd.end}" data-id="${d.id}" data-k="end"></div></div>
+   <div class="modus"><label>MODUS</label><select data-id="${d.id}" data-k="mode"><option ${dd.mode=='Fix'?'selected':''}>Fix</option><option ${dd.mode=='Flex'?'selected':''}>Flex</option><option ${dd.mode=='Frei'?'selected':''}>Frei</option></select></div>
+   <div class="meta"><span>Dauer ${fmt(c.b)}</span><span>Pause ${c.p}min</span></div></div>`;
  });
- cont.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',e=>{state.days[e.target.dataset.id][e.target.dataset.k]=e.target.value;save();render();}));
+ cont.querySelectorAll('input,select').forEach(e=>e.addEventListener('change',ev=>{S.days[ev.target.dataset.id][ev.target.dataset.k]=ev.target.value;save();render()}));
 }
-document.getElementById('target').addEventListener('change',e=>{state.target=parseFloat(e.target.value.replace(',','.'))||38.5;save();render();});
-document.getElementById('pauseToggle').addEventListener('change',e=>{state.pause=e.target.checked;save();render();});
-document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset?')){localStorage.removeItem(LS);location.reload();}};
+document.getElementById('target').addEventListener('change',e=>{S.target=parseFloat(e.target.value.replace(',','.'))||38.5;save();render()});
+document.getElementById('pause').addEventListener('change',e=>{S.pause=e.target.checked;save();render()});
+document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset?')){localStorage.removeItem(LS);location.reload()}};
 document.getElementById('kw').textContent=new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'});
-render();
-if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
+render(); if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}
 </script>
 </body>
 </html>
