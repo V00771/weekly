@@ -1,82 +1,44 @@
-:root{
-  color-scheme: dark;
-  --bg:#0a0d0a;
-  --card:#171d19;
-  --line:#232e26;
-  --line-soft:#2e3d32;
-  --ink:#f2ece0;
-  --ink-soft:#8da08d;
-  --ink-faint:#5a6b5a;
-  --steel:#7ac4a0;
-  --steel-soft:#1a2e26;
-  --mono:'JetBrains Mono',monospace;
-  --sans:'Inter',sans-serif;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:16px 12px 40px;}
-.wrap{max-width:560px;margin:0 auto;}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:4px;}
-h1{font-size:24px;font-weight:800;margin:0;}
-#resetBtn{font-family:var(--mono);font-size:11px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:999px;padding:7px 14px;}
+:root{color-scheme:dark;--bg:#0a0d0a;--card:#171d19;--line:#232e26;--line-soft:#2e3d32;--ink:#f2ece0;--ink-soft:#8da08d;--ink-faint:#5a6b5a;--steel:#7ac4a0;--steel-soft:#1a2e26;--mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);padding:16px 12px 40px}
+.wrap{max-width:560px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{font-size:24px;font-weight:800;margin:0}
+#resetBtn{font-family:var(--mono);font-size:11px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);border-radius:999px;padding:7px 14px}
+.grid-2{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.target-row,.setting-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.summary{background:#151d19;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px;display:flex;gap:14px;align-items:center}
+.day-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.day-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.day-name{font-weight:800;font-size:14px}
 
-.grid-2{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-.target-row,.setting-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;}
-.target-row input{width:78px;font-family:var(--mono);font-size:16px;font-weight:700;text-align:center;border:1.5px solid var(--line-soft);border-radius:10px;padding:7px;background:#0c130e;color:var(--ink);}
-.setting-card{cursor:pointer;}
-.toggle-wrap{position:relative;width:44px;height:26px;flex-shrink:0;}
-.toggle-wrap input{opacity:0;position:absolute;}
-.toggle{position:absolute;inset:0;background:#222e26;border:1px solid var(--line-soft);border-radius:999px;transition:.25s;}
-.toggle::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;background:var(--ink-soft);border-radius:50%;transition:.3s;}
-input:checked + .toggle{background:var(--steel-soft);border-color:var(--steel);}
-input:checked + .toggle::after{background:var(--steel);transform:translateX(18px);}
-
-.summary{background:#151d19;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:14px;display:flex;gap:14px;align-items:center;}
-.gauge-box{flex:0 0 110px;height:80px;position:relative;}
-.gauge-box svg{width:110px;height:76px;}
-.needle{position:absolute;left:50%;bottom:10px;width:2px;height:44px;background:var(--ink);transform-origin:bottom center;transform:translateX(-50%) rotate(-90deg);transition:.6s;}
-.gauge-readout{position:absolute;left:0;right:0;bottom:0;text-align:center;}
-.gauge-readout .val{font-family:var(--mono);font-size:15px;font-weight:800;}
-.summary-info{flex:1;min-width:0;}
-.stamp{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid currentColor;display:inline-flex;}
-.stamp.ok{color:#7ac4a0;background:rgba(122,196,160,.15);border-color:rgba(122,196,160,.3);}
-.progress-track{height:4px;background:rgba(255,255,255,.06);border-radius:999px;margin-top:8px;overflow:hidden;}
-.progress-fill{height:100%;width:0%;background:var(--steel);transition:.6s;}
-
-.day-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:10px;}
-.day-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.day-name{font-weight:800;font-size:14px;}
-.day-netto{font-family:var(--mono);font-size:13px;font-weight:800;}
-
-/* --- DER FIX FÜR DEIN BILD --- */
+/* ====== FIX MIT ABSTAND ====== */
 .row-inputs{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  width:100%;
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;
+  width:100%!important;
 }
 .row-inputs .field{
-  flex:1 1 0;
-  min-width:0;
+  width:100%!important;
+  min-width:0!important;
+  display:block!important;
 }
-.field label,.mode-select label{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:5px;display:block;}
+.field label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
 .field input[type=time]{
-  width:100%;
-  height:46px;
+  width:100%!important;
+  height:48px!important;
   font-family:var(--mono);
   font-size:16px;
   font-weight:600;
   border:1px solid var(--line-soft);
   border-radius:12px;
-  padding:0 10px;
   background:#0c130e;
   color:var(--ink);
+  padding:0 12px;
   color-scheme:dark;
+  display:block;
 }
-.mode-select{flex:0 0 100%;width:100%;}
-.mode-select select{
-  width:100%;height:46px;font-family:var(--mono);font-size:15px;
-  border:1px solid var(--line-soft);border-radius:12px;
-  padding:0 12px;background:#0c130e;color:var(--ink);
-  appearance:none;
-}
+.mode-select{grid-column:1 / -1!important;width:100%!important;margin-top:4px}
+.mode-select label{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);font-weight:700;margin-bottom:6px;display:block}
+.mode-select select{width:100%;height:46px;border:1px solid var(--line-soft);border-radius:12px;background:#0c130e;color:var(--ink);padding:0 12px}
