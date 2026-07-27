@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wochenkarte</title>
 <style>
 :root{--bg:#0a0d0a;--card:#161c19;--line:#232e26;--line2:#2c3a31;--ink:#f2ece0;--soft:#8da08d;--faint:#5a6b5a;--green:#7ac4a0;--mono:monospace}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;padding:16px 12px 50px}
 .wrap{max-width:560px;margin:0 auto}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.kw{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--faint)}
-h1{font-size:32px;margin:4px 0 0;font-weight:800}
-#resetBtn{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:var(--card);color:var(--soft);border-radius:999px;padding:8px 16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .card input{width:84px;background:#0d1410;border:1.5px solid var(--line2);border-radius:12px;padding:8px;color:var(--ink);font-family:var(--mono);font-weight:700;text-align:center}
-.summary{background:#1c2820;border:1px solid var(--line);border-radius:20px;padding:22px 16px 16px;display:flex;gap:16px;align-items:center;margin-bottom:14px}
-.gauge{width:118px;flex-shrink:0;text-align:center;padding-top:18px}
-.gauge svg{width:118px;height:62px;display:block}
-.gauge .v{font-family:var(--mono);font-size:17px;font-weight:800;margin-top:8px;line-height:1}
-.gauge .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--soft)}
+/* TACHO TIEF */
+.summary{background:#1c2820;border:1px solid var(--line);border-radius:20px;padding:30px 16px 16px;display:flex;gap:16px;align-items:center;margin-bottom:14px}
+.gauge{width:118px;text-align:center}
+.gauge svg{width:118px;height:62px;display:block;margin-top:10px}
+.gauge.v{font-family:var(--mono);font-size:17px;font-weight:800;margin-top:12px}
+.gauge.l{font-family:var(--mono);font-size:8px;color:var(--soft);letter-spacing:.2em}
 .s-info{flex:1}.s-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--soft);margin-bottom:3px}.s-row b{color:var(--ink)}
 .badge{font-family:var(--mono);font-size:11px;padding:6px 12px;border-radius:999px;background:rgba(122,196,160,.15);color:#7ac4a0;border:1px solid rgba(122,196,160,.3);display:inline-block;margin-top:6px}
 .bar{height:4px;background:#1d2a23;border-radius:999px;margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--green)}
@@ -26,44 +22,69 @@ h1{font-size:32px;margin:4px 0 0;font-weight:800}
 .day-top{display:flex;justify-content:space-between;margin-bottom:14px;font-weight:700}
 .f-label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
 .row{display:flex!important;width:100%!important}.col{width:calc(50% - 10px)!important}.col:first-child{margin-right:20px!important}
-.col input{width:100%!important;height:56px!important;background:#0c130e!important;border:1px solid var(--line2)!important;border-radius:16px!important;color:var(--ink)!important;font-family:var(--mono)!important;font-size:19px!important;font-weight:700!important;text-align:center!important;-webkit-appearance:none!important}
-.modus{margin-top:14px}.modus label{font-family:var(--mono);font-size:8px;color:var(--faint);letter-spacing:.14em;margin-bottom:6px;display:block}
-.modus select{width:100%;height:48px;background:#0c130e;border:1px solid var(--line2);border-radius:12px;color:var(--ink);padding:0 14px;font-family:var(--mono)}
-.meta{margin-top:12px;border-top:1px dashed var(--line);padding-top:8px;font-family:var(--mono);font-size:10px;color:var(--faint);display:flex;gap:14px}
+.col input{width:100%!important;height:56px!important;background:#0c130e!important;border:1px solid var(--line2)!important;border-radius:16px!important;color:var(--ink)!important;font-family:var(--mono)!important;font-size:19px!important;font-weight:700!important;text-align:center!important}
+.modus{margin-top:14px}.modus select{width:100%;height:48px;background:#0c130e;border:1px solid var(--line2);border-radius:12px;color:var(--ink);padding:0 14px;font-family:var(--mono)}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><div><div class="kw">ZEITERFASSUNG</div><h1>Wochenkarte</h1></div><button id="resetBtn">Reset</button></header>
-<div class="card"><div><b>Sollstunden</b><br><small style="color:#8da08d">Ziel für diese Woche</small></div><input id="target" value="38,5"></div>
+<h1 style="font-size:32px;font-weight:800">Wochenkarte</h1>
+<div class="card"><div><b>Sollstunden</b></div><input id="target" value="38,5"></div>
 <div class="summary" id="sum"></div>
 <div id="days"></div>
 </div>
 <script>
 const DAYS=[{id:'mo',name:'Montag'},{id:'di',name:'Dienstag'},{id:'mi',name:'Mittwoch'},{id:'do',name:'Donnerstag'},{id:'fr',name:'Freitag'}];
-const LS='final_tacho_fix_v15';
-let S=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,pause:true,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
-const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m}; const fmt=m=>{let h=Math.floor(m/60),mm=m%60;return h+'h '+(mm<10?'0':'')+mm+'min'};
-const calc=d=>{let du=toMin(d.end)-toMin(d.start);if(du<0)du+=1440;let p=(S.pause&&du>360)?30:0;return{b:du,p,n:Math.max(0,du-p)}};
+const LS='wochenkarte_FINAL_FIX2';
+let S=JSON.parse(localStorage.getItem(LS)||'null')||{target:38.5,days:{mo:{start:'08:00',end:'17:00',mode:'Fix'},di:{start:'08:00',end:'17:00',mode:'Fix'},mi:{start:'08:00',end:'17:00',mode:'Fix'},do:{start:'08:00',end:'17:00',mode:'Fix'},fr:{start:'08:00',end:'16:30',mode:'Fix'}}};
+const toMin=t=>{let[h,m]=t.split(':').map(Number);return h*60+m};
+const toTime=m=>{m=(m+1440)%1440;let h=Math.floor(m/60),mm=m%60;return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0')};
+const fmt=m=>{let h=Math.floor(m/60),mm=m%60;return h+'h '+(mm<10?'0':'')+mm+'min'};
 const save=()=>localStorage.setItem(LS,JSON.stringify(S));
+
 function render(){
- let total=0; let mp={}; DAYS.forEach(x=>{let c=calc(S.days[x.id]);mp[x.id]=c;total+=c.n});
+ let total=0;
+ let htmlSum='';
+ // Zuerst alle Tage berechnen
+ DAYS.forEach(d=>{
+   let dd=S.days[d.id];
+   // HIER PASSIERT DIE MAGIE
+   if(dd.mode==='Ende anpassen'){
+     let need = (S.target*60/5)+30; // 38.5/5 = 462min +30 Pause = 492min = 8h12
+     let newEnd = toMin(dd.start)+need;
+     dd.end = toTime(newEnd);
+   }
+   if(dd.mode==='Beginn anpassen'){
+     let need = (S.target*60/5)+30;
+     let newStart = toMin(dd.end)-need;
+     dd.start = toTime(newStart);
+   }
+   let du=toMin(dd.end)-toMin(dd.start); if(du<0)du+=1440; let p=du>360?30:0; let n=Math.max(0,du-p);
+   total+=n;
+   d._calc={du,p,n};
+ });
  let tgt=S.target*60; let pct=Math.min(100,Math.max(0,(total/tgt)*100)); let diff=total-tgt;
- document.getElementById('sum').innerHTML=`
-  <div class="gauge"><svg viewBox="0 0 120 60"><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#222e26" stroke-width="12" stroke-linecap="round"/><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#7ac4a0" stroke-width="12" stroke-linecap="round" stroke-dasharray="${pct*1.57} 200"/></svg><div class="v">${Math.floor(total/60)}h${String(total%60).padStart(2,'0')}</div><div class="l">NETTO</div></div>
-  <div class="s-info"><div class="s-row"><span>Ziel</span><b>${fmt(tgt)}</b></div><div class="s-row"><span>Erfasst</span><b>${fmt(total)}</b></div><div class="badge">${diff>0?'+'+fmt(diff):fmt(Math.abs(diff))+' offen'}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+ document.getElementById('sum').innerHTML=`<div class="gauge"><svg viewBox="0 0 120 60"><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#222e26" stroke-width="12" stroke-linecap="round"/><path d="M10 52 A50 50 0 0 1 110 52" fill="none" stroke="#7ac4a0" stroke-width="12" stroke-linecap="round" stroke-dasharray="${pct*1.57} 200"/></svg><div class="v">${Math.floor(total/60)}h${String(total%60).padStart(2,'0')}</div><div class="l">NETTO</div></div><div class="s-info"><div class="s-row"><span>Ziel</span><b>${fmt(tgt)}</b></div><div class="s-row"><span>Erfasst</span><b>${fmt(total)}</b></div><div class="badge">${diff>0?'+'+fmt(diff):fmt(Math.abs(diff))+' offen'}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+
  let cont=document.getElementById('days'); cont.innerHTML='';
  DAYS.forEach(d=>{
-  let dd=S.days[d.id]; let c=mp[d.id];
-  cont.innerHTML+=`<div class="day"><div class="day-top"><span>${d.name}</span><span>${fmt(c.n)}</span></div>
-   <div class="row"><div class="col"><span class="f-label">${d.id.toUpperCase()} START</span><input type="time" value="${dd.start}" data-id="${d.id}" data-k="start"></div><div class="col"><span class="f-label">${d.id.toUpperCase()} ENDE</span><input type="time" value="${dd.end}" data-id="${d.id}" data-k="end"></div></div>
-   <div class="modus"><label>MODUS</label><select data-id="${d.id}" data-k="mode"><option ${dd.mode=='Fix'?'selected':''}>Fix</option><option ${dd.mode=='Beginn anpassen'?'selected':''}>Beginn anpassen</option><option ${dd.mode=='Ende anpassen'?'selected':''}>Ende anpassen</option></select></div>
-   <div class="meta"><span>Dauer ${fmt(c.b)}</span><span>Pause ${c.p}min</span></div></div>`;
+   let dd=S.days[d.id]; let c=d._calc;
+   cont.innerHTML+=`<div class="day"><div class="day-top"><span>${d.name}</span><span>${fmt(c.n)}</span></div>
+   <div class="row"><div class="col"><span class="f-label">START</span><input type="time" value="${dd.start}" data-id="${d.id}" data-k="start"></div><div class="col"><span class="f-label">ENDE</span><input type="time" value="${dd.end}" data-id="${d.id}" data-k="end"></div></div>
+   <div class="modus"><select data-id="${d.id}" data-k="mode"><option ${dd.mode=='Fix'?'selected':''}>Fix</option><option ${dd.mode=='Beginn anpassen'?'selected':''}>Beginn anpassen</option><option ${dd.mode=='Ende anpassen'?'selected':''}>Ende anpassen</option></select></div></div>`;
  });
- cont.querySelectorAll('input,select').forEach(e=>e.addEventListener('change',ev=>{S.days[ev.target.dataset.id][ev.target.dataset.k]=ev.target.value;save();render()}));
+ cont.querySelectorAll('input,select').forEach(e=>{
+   e.addEventListener('change',ev=>{
+     let id=ev.target.dataset.id,k=ev.target.dataset.k,v=ev.target.value;
+     if(k==='mode' && v!=='Fix'){
+       // Wenn Modus gewechselt wird, sofort anpassen
+     }
+     S.days[id][k]=v; save(); render();
+   });
+ });
+ save();
 }
-document.getElementById('target').addEventListener('change',e=>{S.target=parseFloat(e.target.value.replace(',','.'))||38.5;save();render()});
-document.getElementById('resetBtn').onclick=()=>{if(confirm('Reset?')){localStorage.removeItem(LS);location.reload()}};
+document.getElementById('target').addEventListener('change',e=>{S.target=parseFloat(e.target.value.replace(',','.'))||38.5; save(); render()});
 render();
 </script>
 </body>
